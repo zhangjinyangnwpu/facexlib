@@ -27,3 +27,4 @@ def visualize_detection(img, bboxes_and_landmarks, save_path=None, to_bgr=False)
     # save img
     if save_path is not None:
         cv2.imwrite(save_path, img)
+    return img
