@@ -20,7 +20,7 @@ def main(args):
         colors = np.random.rand(32, 3)
 
     # init detection model and tracker
-    det_net = init_detection_model('retinaface_resnet50', half=False)
+    det_net = init_detection_model('retinaface_resnet50', half=False,device='cpu')
     tracker = SORT(max_age=1, min_hits=2, iou_threshold=0.2)
     print('Start track...')
 
@@ -92,6 +92,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     os.makedirs(args.save_folder, exist_ok=True)
     main(args)
-
+    # python3 inference/inference_tracking.py --input_folder assets/facevertify/diff_person/auth --save_folder outputs/test_tracking
     # add verification
     # remove last few frames

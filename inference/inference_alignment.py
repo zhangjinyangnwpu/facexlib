@@ -23,8 +23,8 @@ if __name__ == '__main__':
     parser.add_argument('--img_path', type=str, default='assets/test2.jpg')
     parser.add_argument('--save_path', type=str, default='test_alignment.png')
     parser.add_argument('--model_name', type=str, default='awing_fan')
-    parser.add_argument('--device', type=str, default='cuda')
+    parser.add_argument('--device', type=str, default='cpu')
     parser.add_argument('--to68', action='store_true')
     args = parser.parse_args()
-
+    # python3 inference/inference_alignment.py --img_path assets/face.jpg --save_path outputs/test_alignment_diff_person_train_0.jpg --to68
     main(args)

@@ -12,8 +12,8 @@ from facexlib.visualization import visualize_headpose
 
 def main(args):
     # initialize model
-    det_net = init_detection_model(args.detection_model_name, half=args.half)
-    headpose_net = init_headpose_model(args.headpose_model_name, half=args.half)
+    det_net = init_detection_model(args.detection_model_name, half=args.half,device='cpu')
+    headpose_net = init_headpose_model(args.headpose_model_name, half=args.half,device='cpu')
 
     img = cv2.imread(args.img_path)
     with torch.no_grad():
@@ -36,7 +36,7 @@ def main(args):
 
         # normalize
         normalize(det_face, [0.485, 0.456, 0.406], [0.229, 0.224, 0.225], inplace=True)
-        det_face = det_face.unsqueeze(0).cuda()
+        det_face = det_face.unsqueeze(0)
 
         yaw, pitch, roll = headpose_net(det_face)
         visualize_headpose(img, yaw, pitch, roll, args.save_path)
@@ -50,5 +50,5 @@ if __name__ == '__main__':
     parser.add_argument('--headpose_model_name', type=str, default='hopenet')
     parser.add_argument('--half', action='store_true')
     args = parser.parse_args()
-
+    # python3 inference/inference_headpose.py --img_path assets/facevertify/diff_person/auth/0.jpg --save_path outputs/test_headpose.png
     main(args)

@@ -9,7 +9,7 @@ from facexlib.utils import img2tensor
 
 
 def main(args):
-    modnet = init_matting_model()
+    modnet = init_matting_model(device='cpu')
 
     # read image
     img = cv2.imread(args.img_path) / 255.
@@ -23,7 +23,7 @@ def main(args):
 
     img_t = img2tensor(img, bgr2rgb=True, float32=True)
     normalize(img_t, (0.5, 0.5, 0.5), (0.5, 0.5, 0.5), inplace=True)
-    img_t = img_t.unsqueeze(0).cuda()
+    img_t = img_t.unsqueeze(0)
 
     # resize image for input
     _, _, im_h, im_w = img_t.shape
@@ -61,5 +61,5 @@ if __name__ == '__main__':
     parser.add_argument('--img_path', type=str, default='assets/test.jpg')
     parser.add_argument('--save_path', type=str, default='test_matting.png')
     args = parser.parse_args()
-
+    # python3 inference/inference_matting.py --img_path assets/facevertify/same_person/train/0.jpg --save_path outputs/test_matting_same_person_train_0.jpg
     main(args)

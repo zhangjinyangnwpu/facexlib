@@ -40,7 +40,7 @@ def vis_parsing_maps(img, parsing_anno, stride, save_anno_path=None, save_vis_pa
 
 
 def main(img_path, output):
-    net = init_parsing_model(model_name='parsenet')
+    net = init_parsing_model(model_name='parsenet',device='cpu')
 
     img_name = os.path.basename(img_path)
     img_basename = os.path.splitext(img_name)[0]
@@ -50,7 +50,7 @@ def main(img_path, output):
     img_input = cv2.resize(img_input, (512, 512), interpolation=cv2.INTER_LINEAR)
     img = img2tensor(img_input.astype('float32') / 255., bgr2rgb=True, float32=True)
     normalize(img, (0.5, 0.5, 0.5), (0.5, 0.5, 0.5), inplace=True)
-    img = torch.unsqueeze(img, 0).cuda()
+    img = torch.unsqueeze(img, 0)
 
     with torch.no_grad():
         out = net(img)[0]
@@ -72,5 +72,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     os.makedirs(args.output, exist_ok=True)
-
+    # python3 inference/inference_parsing_parsenet.py --input assets/face.jpg --output outputs/parsing_parsenet_test
     main(args.input, args.output)

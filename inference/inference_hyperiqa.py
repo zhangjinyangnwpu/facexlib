@@ -17,8 +17,8 @@ def main(args):
         2) evaluate the face quality by hyperIQA
     """
     # initialize model
-    det_net = init_detection_model(args.detection_model_name, half=False)
-    assess_net = init_assessment_model(args.assess_model_name, half=False)
+    det_net = init_detection_model(args.detection_model_name, half=False,device='cpu')
+    assess_net = init_assessment_model(args.assess_model_name, half=False,device='cpu')
 
     # specified face transformation in original hyperIQA
     transforms = torchvision.transforms.Compose([
@@ -43,7 +43,7 @@ def main(args):
             detect_face = Image.fromarray(detect_face)
 
             detect_face = transforms(detect_face)
-            detect_face = torch.tensor(detect_face.cuda()).unsqueeze(0)
+            detect_face = torch.tensor(detect_face).unsqueeze(0)
 
             pred = assess_net(detect_face)
             pred_scores.append(float(pred.item()))
@@ -59,5 +59,5 @@ if __name__ == '__main__':
     parser.add_argument('--assess_model_name', type=str, default='hypernet')
     parser.add_argument('--half', action='store_true')
     args = parser.parse_args()
-
+    # python3 inference/inference_hyperiqa.py --img_path assets/face.jpg
     main(args)
